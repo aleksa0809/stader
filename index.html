@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Home</title>
+    <meta name="keywords" content="text, test">
+    <meta name="description" content="very long text description">
+</head>
+
+<body>
+
+    <div id="app"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            'use strict';
+
+            function sortingCities(arr, type) {
+                if (type === "asc") {
+                    arr.sort(function(a, b) {
+                        return a.population - b.population;
+                    });
+                } else if (type === "decs") {
+                    arr.sort(function(a, b) {
+                        return b.population - a.population;
+                    });
+                } else {
+                    return arr
+                }
+            }
+
+            (async() => {
+                let responseL = await fetch('land.json');
+                let countries = await responseL.json();
+                console.log(countries);
+                let responseS = await fetch('stad.json');
+                let cities = await responseS.json();
+                console.log(cities);
+
+                sortingCities(cities, "decs");
+
+                let x = '';
+                for (let i = 0; i < countries.length; i++) {
+                    x += "<h3>" + countries[i].countryname + ' - ' + countries[i].id + "</h3>";
+                    for (let j = 0; j < cities.length; j++) {
+                        if (countries[i].id === cities[j].countryid) {
+                            x += cities[j].stadname + ' - ' + cities[j].population + ' - ' + cities[j].countryid + ' - ' + cities[j].id + "</br>";
+                        }
+                    }
+                }
+                document.getElementById("app").innerHTML = x;
+            })();
+
+
+        });
+    </script>
+
+</body>
+
+</html>
